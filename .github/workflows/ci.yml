@@ -8,13 +8,37 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Source code
-        uses: actions/Checkout@v4
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        if: github.event_name == 'push' && github.rf == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}  
+
+      - name: Calculate next version
+        if: github.event_name == 'push' && github.rf == 'refs/heads/main'
+        id: version
+        run: |
+          VERSION=$(cat VERSION)
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+          PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+          echo "current version: $VERSION"
+          echo "New version: $NEW_VERSION"
+          echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Generate TLS certificate
         run: | 
@@ -27,5 +51,35 @@ jobs:
 
       - name: Build Docker images
         run:  docker compose build
+
+      - name: Tag Docker images
+        if: github.event_name == 'push' && github.rf == 'refs/heads/main'
+        run: |
+          docker tag php-postgres-bookapp/httpd \
+          ghcr.io/${{ github.respository_owner }}/php-postgres-bookapp-httpd:${{ steps.version.outputs.version }}
+
+          docker tag php-postgres-bookapp/phpfpm \
+          ghcr.io/${{ github.respository_owner }}/php-postgres-bookapp-phfpm:${{ steps.version.outputs.version }}
+
+      - name: Push the Docker images
+        if: github.event_name == 'push' && github.rf == 'refs/heads/main'
+        run: |
+          docker push ghcr.io/${{ github.respository_owner }}/php-postgres-bookapp-httpd:${{ steps.version.outputs.version }}
+          docker push ghcr.io/${{ github.respository_owner }}/php-postgres-bookapp-phfpm:${{ steps.version.outputs.version }}
+
+      - name: Update Verion file
+        if: github.event_name == 'push' && github.rf == 'refs/heads/main'
+        run: |
+          echo "${{ steps.version.outputs.version }}" > VERSION
+
+          git config user.name"github-actions[bot]"
+          git config user.mail "41898282+github-actions[bot]@users.noreply.github.com" 
+          
+          git add VERSION
+          git commit -m "chore: update version to ${{ steps.version.outputs.version }} [skip ci]"
+          git push origin HEAD:main
+
+     
+
 
 

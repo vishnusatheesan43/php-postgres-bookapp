@@ -1,5 +1,6 @@
 services:
   phpfpm-service:
+    image: php-postgres-bookapp/phpfpm
     build:
        context: app
        dockerfile: phpfpmDockerfile  
@@ -26,6 +27,7 @@ services:
       - my-psqldb-vol2:/var/lib/postgresql/data
 
   httpd:
+    image: php-postgres-bookapp/httpd
     build:
       context: .
       dockerfile: httpd/httpdDockerfile
