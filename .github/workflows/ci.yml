@@ -64,8 +64,8 @@ jobs:
       - name: Push the Docker images
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          docker push ghcr.io/${{ github.respository_owner }}/php-postgres-bookapp-httpd:${{ steps.version.outputs.version }}
-          docker push ghcr.io/${{ github.respository_owner }}/php-postgres-bookapp-phfpm:${{ steps.version.outputs.version }}
+          docker push ghcr.io/${{ github.repository_owner }}/php-postgres-bookapp-httpd:${{ steps.version.outputs.version }}
+          docker push ghcr.io/${{ github.repository_owner }}/php-postgres-bookapp-phfpm:${{ steps.version.outputs.version }}
 
       - name: Update Verion file
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
