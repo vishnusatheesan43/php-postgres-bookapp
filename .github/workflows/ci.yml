@@ -22,7 +22,7 @@ jobs:
           openssl req -x509 -nodes -days 1 \
           -newkey rsa:2048 \
           -keyout httpd/ssl/server.key \
-          -out httpd/ssl/server.crt 
+          -out httpd/ssl/server.crt \
           -subj "/CN=localhost"
 
       - name: Build Docker images
