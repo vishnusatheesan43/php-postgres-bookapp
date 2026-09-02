@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpfpm-service
+  namespace: bookcatalogapp  
+spec:
+  selector:
+     app: phpfpm-deploy  
+  type: ClusterIP     
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
+

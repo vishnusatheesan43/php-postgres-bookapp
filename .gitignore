@@ -1,0 +1,8 @@
+.env
+.env*
+
+certs/
+ssl/
+
+.vscode
+.idea/

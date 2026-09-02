@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: phpfpm-deploy
+  name: phpfpm-deploy
+  namespace: bookcatalogapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phpfpm-deploy
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: phpfpm-deploy
+    spec:
+      containers:
+      - image: vishnusatheesan/bookcatalogphpfpm:0.0.1
+        name: phpfpm
+        ports:
+         -  containerPort: 9000
+        envFrom:
+          - secretRef:
+              name: app-secrets  
+        resources: 
+          requests:
+            memory: "500Mi"
+            cpu: "100m"
+          limits:
+            memory: "600Mi"
+            cpu: "150m"  
+      initContainers:
+        - name:  init-database
+          image: busybox:1.28
+          command: [ 'sh', '-c', "until nslookup postgres-service; do echo 'Database still not accessible'; sleep 2; done;" ]     
+status: {}

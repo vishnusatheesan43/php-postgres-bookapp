@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: httpd-deploy
+  name: httpd-deploy
+  namespace: bookcatalogapp  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: httpd-deploy
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: httpd-deploy
+    spec:
+      containers:
+      - image: vishnusatheesan/bookcataloghttpd:0.0.2   
+        name: httpd
+        ports:
+          - containerPort: 80
+        envFrom:
+          - secretRef:
+              name: app-secrets
+        resources:
+          requests: 
+            memory: "500Mi"
+            cpu: "100m"
+          limits:
+            memory: "600Mi"
+            cpu: "150m"  
+        livenessProbe:
+          httpGet:
+            path: /ping.html
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5 
+          failureThreshold: 3
+          successThreshold: 1
+
+        readinessProbe:
+          httpGet:
+            path: /index.php
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5  
+          failureThreshold: 3
+          successThreshold: 1  
+              
+      # tolerations:
+      #  - key: "node"
+      #    operator: "Equal"
+      #    value: "web"
+      #    effect: "NoSchedule"
+             
+status: {}

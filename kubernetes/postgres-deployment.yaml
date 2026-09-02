@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: postgres-deploy
+  name: postgres-deploy
+  namespace: bookcatalogapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-deploy
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: postgres-deploy
+    spec:
+      containers:
+      - image: postgres:16-alpine
+        name: postgresserver
+        ports:
+          - containerPort: 5432
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: DB_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: DB_PASS
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: DB_NAME
+        resources: 
+          requests:
+            memory: "500Mi"
+            cpu: "150m"
+          limits:
+            memory: "1000Mi"  
+            cpu: "256m"
+status: {}

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: httpd-service
+  name: httpd-service
+  namespace: bookcatalogapp
+spec:
+  selector:
+    app: httpd-deploy
+  type: NodePort
+  ports:
+    - protocol: TCP
+      nodePort: 30001
+      port: 80
+      targetPort: 80  
+    
+status:
+  loadBalancer: {}

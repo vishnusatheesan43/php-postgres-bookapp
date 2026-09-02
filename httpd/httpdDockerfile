@@ -1,0 +1,30 @@
+FROM httpd:2.4.66
+
+RUN sed  -i \
+	-e 's/#LoadModule proxy_module/LoadModule proxy_module/' \
+	-e 's/#LoadModule proxy_fcgi_module/LoadModule proxy_fcgi_module/' \
+  -e 's/#LoadModule rewrite__module/LoadModule rewrite__module/' \
+	-e 's/#LoadModule ssl_module/LoadModule ssl_module/' \
+	-e 's/#LoadModule socache_shmcb_module/LoadModule socache_shmcb_module/' \
+	/usr/local/apache2/conf/httpd.conf 
+
+
+RUN mkdir -p /usr/local/apache2/conf/custom_conf/  /var/www/html/ 
+
+COPY httpd/httpd.conf /usr/local/apache2/conf/custom_conf/httpd.conf
+
+COPY app/ /var/www/html/ 
+
+COPY httpd/ping.html /var/www/html/ 
+
+#Copying certs file to httpd
+COPY httpd/ssl/server.crt /usr/local/apache2/conf/custom_conf/server.crt
+COPY httpd/ssl/server.key /usr/local/apache2/conf/custom_conf/server.key
+
+RUN chown -R www-data:www-data /var/www/html  \
+	&& chmod -R 755 /var/www/html
+
+RUN echo "Include conf/custom_conf/httpd.conf" >> /usr/local/apache2/conf/httpd.conf
+
+
+

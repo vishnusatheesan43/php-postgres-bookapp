@@ -1,0 +1,5 @@
+FROM  postgres:16-alpine
+
+ENV POSTGRES_USER=bookapp_admin
+ENV POSTGRES_PASSWORD=example
+ENV POSTGRES_DB=bookappdb

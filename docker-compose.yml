@@ -1,0 +1,49 @@
+services:
+  phpfpm-service:
+    build:
+       context: app
+       dockerfile: phpfpmDockerfile  
+    restart: always
+    environment:
+      DB_HOST: psql-db
+      DB_NAME: bookappdb
+      DB_USER: bookapp_admin
+      DB_PASS: example
+
+    ports:
+      - 9000:9000
+    depends_on:
+      - psql-db
+
+  psql-db:
+    image:  postgres:16-alpine
+    environment:
+      POSTGRES_USER: bookapp_admin
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: bookappdb
+
+    volumes:
+      - my-psqldb-vol2:/var/lib/postgresql/data
+
+  httpd:
+    build:
+      context: .
+      dockerfile: httpd/httpdDockerfile
+    environment:
+      DB_HOST: psql-db
+      DB_NAME: bookappdb
+      DB_USER: bookapp_admin
+      DB_PASS: example
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - ./app/index.php:/var/www/html/index.php
+      - ./app/db.php:/var/www/html/db.php
+      - ./app/books.php:/var/www/html/books.php
+      - ./app/views:/var/www/html/views
+    depends_on:
+      - phpfpm-service
+volumes:
+  my-psqldb-vol2:
