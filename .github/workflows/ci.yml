@@ -16,6 +16,15 @@ jobs:
       - name: Checkout Source code
         uses: actions/Checkout@v4
 
+      - name: Generate TLS certificate
+        run: | 
+          mkdir -p httpd/ssl  
+          openssl req -x509 -nodes -days 1 \
+          -newkey rsa:2048 \
+          -keyout httpd/ssl/server.key \
+          -out httpd/ssl/server.crt 
+          -subj "/CN=localhost"
+
       - name: Build Docker images
         run:  docker compose build
 
