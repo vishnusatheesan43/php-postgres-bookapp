@@ -1,0 +1,22 @@
+name: Book Catalog CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source code
+        uses: actions/Checkout@v4
+
+      - name: Build Docker images
+        run:  docker compose build
+
+
