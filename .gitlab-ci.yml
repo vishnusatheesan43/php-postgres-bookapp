@@ -57,7 +57,10 @@ Build-and-push:
         - docker push "$CI_REGISTRY_IMAGE"/php-postgres-bookapp-httpd:"$NEW_VERSION"
         - docker push "$CI_REGISTRY_IMAGE"/php-postgres-bookapp-phpfpm:"$NEW_VERSION"
 
-    after_script:
-        - echo "Cleaning up the environment"  
+        - echo "updating the version file"
+        - echo "$NEW_VERSION" > VERSION
+
+
+     
 
 
