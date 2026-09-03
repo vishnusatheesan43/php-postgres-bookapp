@@ -1,0 +1,64 @@
+
+stages:
+  - build-and-push
+  - beploy
+
+Bump-version:
+    stage: build-and-push
+    image: bash:latest
+    script: 
+        - VERSION=$(cat VERSION)
+        - IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+        - PATCH=$((PATCH + 1))
+        - NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+        - echo "current version:- $VERSION"
+        - echo "New version:- $NEW_VERSION"
+        - echo "version=$NEW_VERSION" >> build.env
+    artifacts:
+        reports:
+          dotenv: build.env
+
+Build-and-push:
+    stage: build-and-push
+    image: docker:27-cli
+    services:
+      - docker:27-dind
+
+    needs:
+      - job: Bump-version  
+        artifacts: true
+
+    variables:
+      DOCKER_HOST: tcp://docker:2375
+      DOCKER_TLS_CERTDIR: ""  
+
+    script:
+        - echo "Logging in to GItab contianer registry"
+        - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+        #httpd image need ssl certs for enabling https the following command will generate the ssl cert and key
+        - echo "Generating TLS certificate for httpd"
+        - mkdir -p httpd/ssl  
+        - openssl req -x509 -nodes -days 1 \
+          -newkey rsa:2048 \
+          -keyout httpd/ssl/server.key \
+          -out httpd/ssl/server.crt \
+          -subj "/CN=localhost"
+
+        - echo "building the docker image"
+        - docker compose build 
+
+        - echo "tagging images"
+        - docker tag php-postgres-bookapp/httpd \
+          "$CI_REGISTRY_IMAGE"/php-postgres-bookapp-httpd:"$NEW_VERSION"
+        - docker tag php-postgres-bookapp/phfpm \
+          "$CI_REGISTRY_IMAGE"/php-postgres-bookapp-phpfpm:"$NEW_VERSION"
+
+        - echo "pushing image to gitlab registry"
+        - docker push "$CI_REGISTRY_IMAGE"/php-postgres-bookapp-httpd:"$NEW_VERSION"
+        - docker push "$CI_REGISTRY_IMAGE"/php-postgres-bookapp-phpfpm:"$NEW_VERSION"
+
+    after_script:
+        - echo "Cleaning up the environment"
+        - docker system prune -a -f    
+
+
