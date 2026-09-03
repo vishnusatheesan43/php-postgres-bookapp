@@ -77,4 +77,4 @@ Build-and-push:
 
         - git add VERSION
         - git commit -m "chore(version):- bump version to $NEW_VERSION [skip ci]"
-        - git push orign HEAD:main
+        - git push origin HEAD:main
