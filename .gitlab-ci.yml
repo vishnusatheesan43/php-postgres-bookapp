@@ -50,7 +50,7 @@ Build-and-push:
         - openssl req -x509 -nodes -days 1 -newkey rsa:2048 -keyout httpd/ssl/server.key -out httpd/ssl/server.crt -subj "/CN=localhost"
 
         - echo "building the docker image..."
-        - docker compose build  docker
+        - docker compose build
 
         - echo "listing docker images"
         - docker compose config --images
