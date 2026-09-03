@@ -55,24 +55,26 @@ Build-and-push:
         - echo "listing docker images"
         - docker compose config --images
 
-        - echo "tagging images..."
-        - docker tag docker.io/php-postgres-bookapp/httpd:latest "$CI_REGISTRY_IMAGE/httpd:$NEW_VERSION"
-        - docker tag docker.io/php-postgres-bookapp/phpfpm:latest "$CI_REGISTRY_IMAGE/phpfpm:$NEW_VERSION"
+        - echo "gitlab container registry name:- $CI_REGISTRY_IMAGE"
 
-        - echo "pushing image to gitlab registry"
-        - docker push "$CI_REGISTRY_IMAGE:$NEW_VERSION"
-        - docker push "$CI_REGISTRY_IMAGE:$NEW_VERSION"
+    #     - echo "tagging images..."
+    #     - docker tag docker.io/php-postgres-bookapp/httpd:latest "$CI_REGISTRY_IMAGE/httpd:$NEW_VERSION"
+    #     - docker tag docker.io/php-postgres-bookapp/phpfpm:latest "$CI_REGISTRY_IMAGE/phpfpm:$NEW_VERSION"
 
-        - echo "updating the version file"
-        - echo "$NEW_VERSION" > VERSION
-        # 2. Configure Git identity for the commit
-        - git config --global user.email "gitlab-ci@example.com"
-        - git config --global user.name "GitLab CI Bot"
+    #     - echo "pushing image to gitlab registry"
+    #     - docker push "$CI_REGISTRY_IMAGE:$NEW_VERSION"
+    #     - docker push "$CI_REGISTRY_IMAGE:$NEW_VERSION"
 
-    # 3. Authenticate using a Project Access Token with write permissions
-    # (Replace 'GITLAB_PUSH_TOKEN' with the name of your saved variable)
-        - git remote set-url origin "https://oauth2:${GITLAB_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+    #     - echo "updating the version file"
+    #     - echo "$NEW_VERSION" > VERSION
+    #     # 2. Configure Git identity for the commit
+    #     - git config --global user.email "gitlab-ci@example.com"
+    #     - git config --global user.name "GitLab CI Bot"
 
-        - git add VERSION
-        - git commit -m "chore(version):- bump version to $NEW_VERSION [skip ci]"
-        - git push orign HEAD:main
+    # # 3. Authenticate using a Project Access Token with write permissions
+    # # (Replace 'GITLAB_PUSH_TOKEN' with the name of your saved variable)
+    #     - git remote set-url origin "https://oauth2:${GITLAB_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+
+    #     - git add VERSION
+    #     - git commit -m "chore(version):- bump version to $NEW_VERSION [skip ci]"
+    #     - git push orign HEAD:main
