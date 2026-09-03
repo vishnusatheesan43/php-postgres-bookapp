@@ -58,7 +58,6 @@ Build-and-push:
         - docker push "$CI_REGISTRY_IMAGE"/php-postgres-bookapp-phpfpm:"$NEW_VERSION"
 
     after_script:
-        - echo "Cleaning up the environment"
-        - docker system prune -a -f    
+        - echo "Cleaning up the environment"  
 
 
