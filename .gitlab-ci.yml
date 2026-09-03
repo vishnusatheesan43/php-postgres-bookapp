@@ -36,7 +36,9 @@ Build-and-push:
         - echo "Logging in to GItab contianer registry"
         - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
         #httpd image need ssl certs for enabling https the following command will generate the ssl cert and key
-        - echo "Generating TLS certificate for httpd"
+        - echo "Installing openssl utility..."
+        - apk add --no-cache openssl
+        - echo "Generating TLS certificate for httpd..."
         - mkdir -p httpd/ssl  
         - openssl req -x509 -nodes -days 1 \
           -newkey rsa:2048 \
@@ -44,10 +46,10 @@ Build-and-push:
           -out httpd/ssl/server.crt \
           -subj "/CN=localhost"
 
-        - echo "building the docker image"
+        - echo "building the docker image..."
         - docker compose build 
 
-        - echo "tagging images"
+        - echo "tagging images..."
         - docker tag php-postgres-bookapp/httpd \
           "$CI_REGISTRY_IMAGE"/php-postgres-bookapp-httpd:"$NEW_VERSION"
         - docker tag php-postgres-bookapp/phfpm \
