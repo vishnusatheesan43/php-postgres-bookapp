@@ -47,13 +47,13 @@ Build-and-push:
 
         - echo "tagging images..."
         - docker tag php-postgres-bookapp/httpd \
-          "$CI_REGISTRY_IMAGE"/php-postgres-bookapp-httpd:"$NEW_VERSION"
+          "$CI_REGISTRY_IMAGE":"$NEW_VERSION"
         - docker tag php-postgres-bookapp/phfpm \
-          "$CI_REGISTRY_IMAGE"/php-postgres-bookapp-phpfpm:"$NEW_VERSION"
+          "$CI_REGISTRY_IMAGE":"$NEW_VERSION"
 
         - echo "pushing image to gitlab registry"
-        - docker push "$CI_REGISTRY_IMAGE"/php-postgres-bookapp-httpd:"$NEW_VERSION"
-        - docker push "$CI_REGISTRY_IMAGE"/php-postgres-bookapp-phpfpm:"$NEW_VERSION"
+        - docker push "$CI_REGISTRY_IMAGE":"$NEW_VERSION"
+        - docker push "$CI_REGISTRY_IMAGE":"$NEW_VERSION"
 
         - echo "updating the version file"
         - echo "$NEW_VERSION" > VERSION
