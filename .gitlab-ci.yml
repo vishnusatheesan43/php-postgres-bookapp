@@ -57,7 +57,7 @@ Build-and-push:
 
         - echo "tagging images..."
         - docker tag docker.io/php-postgres-bookapp/httpd:latest "$CI_REGISTRY_IMAGE:$NEW_VERSION"
-        - docker tag docker.io/php-postgres-bookapp/phfpm:latest "$CI_REGISTRY_IMAGE:$NEW_VERSION"
+        - docker tag docker.io/php-postgres-bookapp/phpfpm:latest "$CI_REGISTRY_IMAGE:$NEW_VERSION"
 
         - echo "pushing image to gitlab registry"
         - docker push "$CI_REGISTRY_IMAGE:$NEW_VERSION"
