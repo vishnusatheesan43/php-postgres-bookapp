@@ -40,11 +40,7 @@ Build-and-push:
         - apk add --no-cache openssl
         - echo "Generating TLS certificate for httpd..."
         - mkdir -p httpd/ssl  
-        - openssl req -x509 -nodes -days 1 \
-          -newkey rsa:2048 \
-          -keyout httpd/ssl/server.key \
-          -out httpd/ssl/server.crt \
-          -subj "/CN=localhost"
+        - openssl req -x509 -nodes -days 1 -newkey rsa:2048 -keyout httpd/ssl/server.key -out httpd/ssl/server.crt -subj "/CN=localhost"
 
         - echo "building the docker image..."
         - docker compose build 
