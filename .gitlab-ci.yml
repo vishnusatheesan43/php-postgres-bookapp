@@ -3,6 +3,13 @@ stages:
   - build-and-push
   - beploy
 
+#To ensure pipeline triggers only when changes to the main branch
+workflow:
+    rules:
+      - if: $CI_COMMIT_BRANCH == "main"
+        when: always
+      - when: never    
+
 Bump-version:
     stage: build-and-push
     image: bash:latest
@@ -13,7 +20,7 @@ Bump-version:
         - NEW_VERSION="$MAJOR.$MINOR.$PATCH"
         - echo "current version:- $VERSION"
         - echo "New version:- $NEW_VERSION"
-        - echo "version=$NEW_VERSION" >> build.env
+        - echo "NEW_VERSION=$NEW_VERSION" >> build.env
     artifacts:
         reports:
           dotenv: build.env
