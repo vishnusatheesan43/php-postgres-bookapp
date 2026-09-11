@@ -45,6 +45,9 @@ Build-and-push:
     before_script:
         - echo "Installing openssl utility..."
         - apk add --no-cache openssl  
+        - echo "Installing AWS"
+        - apk add --no-cache aws-cli
+        - aws --version
 
     script:
         #httpd image need ssl certs for enabling https the following command will generate the ssl cert and key
