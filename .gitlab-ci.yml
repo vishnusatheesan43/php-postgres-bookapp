@@ -1,3 +1,6 @@
+variables: 
+  PHPFPM_REGISTRY_NAME: "835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/php-fpm"
+  HTTPD_REGISTRY_NAME: "835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/httpd"
 
 stages:
   - build-and-push
@@ -39,31 +42,34 @@ Build-and-push:
       DOCKER_HOST: tcp://docker:2375
       DOCKER_TLS_CERTDIR: ""  
 
-    script:
-        - echo "Logging in to GItab contianer registry"
-        - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-        #httpd image need ssl certs for enabling https the following command will generate the ssl cert and key
+    before_script:
         - echo "Installing openssl utility..."
-        - apk add --no-cache openssl
+        - apk add --no-cache openssl  
+
+    script:
+        #httpd image need ssl certs for enabling https the following command will generate the ssl cert and key
         - echo "Generating TLS certificate for httpd..."
         - mkdir -p httpd/ssl  
         - openssl req -x509 -nodes -days 1 -newkey rsa:2048 -keyout httpd/ssl/server.key -out httpd/ssl/server.crt -subj "/CN=localhost"
 
-        - echo "building the docker image..."
-        - docker compose build
+        - echo "building the docker image for httpd..."
+        - docker build -t httpdimage -f httpd/httpdDockerfile .
 
-        - echo "listing docker images"
-        - docker compose config --images
+        - echo "building the docker image for phpfpm..."
+        - docker build -t phpfpmimage -f app/phpfpmDockerfile app/
 
-        - echo "gitlab container registry name:- $CI_REGISTRY_IMAGE"
 
         - echo "tagging images..."
-        - docker tag docker.io/php-postgres-bookapp/httpd:latest "$CI_REGISTRY_IMAGE:httpd-$NEW_VERSION"
-        - docker tag docker.io/php-postgres-bookapp/phpfpm:latest "$CI_REGISTRY_IMAGE:phpfpm-$NEW_VERSION"
+        - docker tag docker.io/httpdimage "$HTTPD_REGISTRY_NAME:httpd-$NEW_VERSION"
+        - docker tag docker.io/phpfpmimage "$PHPFPM_REGISTRY_NAME:phpfpm-$NEW_VERSION"
 
-        - echo "pushing image to gitlab registry"
-        - docker push "$CI_REGISTRY_IMAGE:httpd-$NEW_VERSION"
-        - docker push "$CI_REGISTRY_IMAGE:phpfpm-$NEW_VERSION"
+        - echo "Running ecr login"
+        - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 835590170478.dkr.ecr.us-east-1.amazonaws.com
+
+        - echo "pushing httpd image to ECR"
+        - docker push "$HTTPD_REGISTRY_NAME:httpd-$NEW_VERSION"
+        - echo "pushing phpfpm image to ECR"
+        - docker push "$PHPFPM_REGISTRY_NAME:phpfpm-$NEW_VERSION"
 
         - echo "updating the version file"
         - echo "$NEW_VERSION" > VERSION
