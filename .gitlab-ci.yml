@@ -74,16 +74,10 @@ Build-and-push:
         - echo "pushing phpfpm image to ECR"
         - docker push "$PHPFPM_REGISTRY_NAME:phpfpm-$NEW_VERSION"
 
-        - echo "updating the version file"
-        - echo "$NEW_VERSION" > VERSION
-        # 2. Configure Git identity for the commit
-        - git config --global user.email "gitlab-ci@example.com"
-        - git config --global user.name "GitLab CI Bot"
 
-    # 3. Authenticate using a Project Access Token with write permissions
-    # (Replace 'GITLAB_PUSH_TOKEN' with the name of your saved variable)
-        - git remote set-url origin "https://oauth2:${GITLAB_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
-
-        - git add VERSION
-        - git commit -m "chore(version):- bump version to $NEW_VERSION [skip ci]"
-        - git push origin HEAD:main
+Update-version:
+  stage: build-and-push
+  image: bash:latest
+  script:
+    - echo "updating new version back to VERSION file"
+    - bash ./scripts/Update-version.sh "$NEW_VERSION" VERSION
