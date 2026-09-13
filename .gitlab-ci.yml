@@ -89,7 +89,7 @@ Update-version:
   stage: build-and-push
   image: bash:latest
   needs:  
-    - job: Build-and-push
+    - job: Bump-version
       artifacts: true
   before_script: 
     - echo "install git"
