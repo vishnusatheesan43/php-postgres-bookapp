@@ -6,7 +6,7 @@
    - job: Update-version
 
   before_script:
-    - Config_File="helm/config/${ENV}/${ENV}_value.yaml"
+    - Config_File="helm/config/${ENV}/${ENV}_values.yaml"
     - cluster=$(yq '.cluster' $Config_File) 
     - namespace=$(yq '.namespace' $Config_File) 
     - region=$(yq '.region' $Config_File)
