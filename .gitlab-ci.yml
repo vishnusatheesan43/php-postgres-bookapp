@@ -100,7 +100,7 @@ Update-version:
     - git remote set-url origin "https://oauth2:${GITLAB_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
     - echo "updating new image tag to  "
     - echo "updating new version back to VERSION file in the repo"
-    - bash ./scripts/Update-version.sh "$NEW_VERSION" VERSION
+    - bash ./scripts/update-version.sh "$NEW_VERSION" VERSION
 
 Deploy-QA:
   stage: deploy
