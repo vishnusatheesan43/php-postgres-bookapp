@@ -1,6 +1,6 @@
 cluster: "bookcatalog_qa_cluster"
 namespace: "bookcatalog-qa"
-region: ""
+region: "us-east-1"
 httpdDeployment:
   replicas: 2
   repository: vishnusatheesan/bookcataloghttpd
