@@ -7,7 +7,7 @@ variables:
 
 stages:
   - build-and-push
-  - beploy
+  - deploy
 
 #To ensure pipeline triggers only when changes to the main branch
 workflow:
