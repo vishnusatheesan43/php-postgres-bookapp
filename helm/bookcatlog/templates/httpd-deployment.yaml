@@ -4,9 +4,9 @@ metadata:
   labels:
     app: httpd-deploy
   name: httpd-deploy
-  namespace: bookcatalogapp  
+  namespace: {{ .Values.namespace }}  
 spec:
-  replicas: 1
+  replicas: {{ .Values.httpdDeployment.replicas }}
   selector:
     matchLabels:
       app: httpd-deploy
@@ -17,7 +17,7 @@ spec:
         app: httpd-deploy
     spec:
       containers:
-      - image: vishnusatheesan/bookcataloghttpd:0.0.2   
+      - image: "{{ .Values.httpdDeployment.repository }}:{{ .Values.httpdDeployment.tag }}"
         name: httpd
         ports:
           - containerPort: 80

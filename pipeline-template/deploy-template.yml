@@ -1,0 +1,27 @@
+.deploy_template:
+  image: alpine/k8s:1.34.11
+  needs:
+   - job: Build-and-push
+     artifacts: true 
+   - job: Update-version
+
+  before_script:
+    - Config_File="helm/config/${ENV}/${ENV}_value.yaml"
+    - cluster=$(yq '.cluster' $Config_File) 
+    - namespace=$(yq '.namespace' $Config_File) 
+    - region=$(yq '.region' $Config_File)
+
+  script:
+    - echo "======================================"
+    - echo "Environment   :- $ENV"  
+    - echo "HTTPD TAG     :- $HTTPD_TAG"  
+    - echo "PHPFPM TAG    :- $PHPFPM_TAG"
+    - echo "Config File   :- $Config_File"
+    - echo "======================================="
+    
+    - echo "Updating kubeconfig to authenticate eks cluster"
+    - aws eks update-kubeconfig --region "$region" --name "$cluster"
+
+    - echo "Deploying application to cluster"
+    - helm upgrade --install bookcatlogqa helm/bookcatlog -f $Config_File
+

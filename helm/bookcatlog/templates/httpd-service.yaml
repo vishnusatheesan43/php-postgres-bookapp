@@ -4,7 +4,7 @@ metadata:
   labels:
     app: httpd-service
   name: httpd-service
-  namespace: bookcatalogapp
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     app: httpd-deploy

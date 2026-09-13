@@ -2,7 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: postgres-deploy-hpa
-  namespace: bookcatalogapp
+  namespace: {{ .Values.namespace }}
 spec:
   maxReplicas: 10
   metrics:

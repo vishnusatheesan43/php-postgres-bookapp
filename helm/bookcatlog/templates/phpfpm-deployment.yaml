@@ -4,9 +4,9 @@ metadata:
   labels:
     app: phpfpm-deploy
   name: phpfpm-deploy
-  namespace: bookcatalogapp
+  namespace: {{ .Values.namespace }}
 spec:
-  replicas: 1
+  replicas:  {{ .Values.phpfpmDeployment.replicas }}
   selector:
     matchLabels:
       app: phpfpm-deploy
@@ -17,7 +17,7 @@ spec:
         app: phpfpm-deploy
     spec:
       containers:
-      - image: vishnusatheesan/bookcatalogphpfpm:0.0.1
+      - image: "{{ .Values.phpfpmDeployment.repository }}:{{ .Values.phpfpmDeployment.tag }}"
         name: phpfpm
         ports:
          -  containerPort: 9000

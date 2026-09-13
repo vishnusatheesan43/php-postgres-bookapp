@@ -1,3 +1,6 @@
+include:
+    - local: 'pipeline-template/deploy-template.yml'
+
 variables: 
   PHPFPM_REGISTRY_NAME: "835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/php-fpm"
   HTTPD_REGISTRY_NAME: "835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/httpd"
@@ -74,10 +77,36 @@ Build-and-push:
         - echo "pushing phpfpm image to ECR"
         - docker push "$PHPFPM_REGISTRY_NAME:phpfpm-$NEW_VERSION"
 
+        - echo "HTTPD_TAG=httpd-$NEW_VERSION" >> build.env
+        - echo "PHPFPM_TAG=phpfpm-$NEW_VERSION" >> build.env
+
+    artifacts:
+      reports:
+        dotenv: build.env    
+
 
 Update-version:
   stage: build-and-push
   image: bash:latest
+  needs:  
+    - job: Build-and-push
+      artifacts: true  
   script:
-    - echo "updating new version back to VERSION file"
+    - git config --global user.email "gitlab-ci@example.com"
+    - git config --global user.name "GitLab CI Bot"
+    - git remote set-url origin "https://oauth2:${GITLAB_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+    - echo "updating new image tag to  "
+    - echo "updating new version back to VERSION file in the repo"
     - bash ./scripts/Update-version.sh "$NEW_VERSION" VERSION
+
+Deploy-QA:
+  stage: deploy
+  extends: .deploy_template
+  variables:
+    ENV: "qa"
+  when: manual  
+
+     
+
+
+     

@@ -4,7 +4,7 @@ metadata:
   labels:
     app: postgres-deploy
   name: postgres-deploy
-  namespace: bookcatalogapp
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: 1
   selector:
