@@ -90,7 +90,10 @@ Update-version:
   image: bash:latest
   needs:  
     - job: Build-and-push
-      artifacts: true  
+      artifacts: true
+  before_script: 
+    - echo "install git"
+    - apk update && apk add --no-cache git       
   script:
     - git config --global user.email "gitlab-ci@example.com"
     - git config --global user.name "GitLab CI Bot"
