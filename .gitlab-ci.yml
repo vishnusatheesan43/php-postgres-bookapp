@@ -91,6 +91,7 @@ Update-version:
   needs:  
     - job: Bump-version
       artifacts: true
+    - job: Build-and-push
   before_script: 
     - echo "install git"
     - apk update && apk add --no-cache git       
