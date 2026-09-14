@@ -35,5 +35,7 @@
     - git remote set-url origin "https://oauth2:${GITLAB_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"  
     - git add "$Config_File"
     - git commit -m "updating the new image tag to $Config_File [skip ci]"
+    - git fetch origin main
+    - git rebase origin/main
     - git push origin HEAD:main
 

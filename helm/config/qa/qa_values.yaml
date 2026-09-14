@@ -3,11 +3,11 @@ namespace: "bookcatalog-qa"
 region: "us-east-1"
 httpdDeployment:
   replicas: 2
-  repository: vishnusatheesan/bookcataloghttpd
+  repository: 835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/httpd
   tag: 0.0.2 
 
 phpfpmDeployment:
   replicas: 2
-  repository: vishnusatheesan/bookcatalogphpfpm
+  repository: 835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/php-fpm
   tag:  0.0.1
 
