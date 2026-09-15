@@ -13,7 +13,7 @@ phpfpmDeployment:
 
 ingress:
   path: "/qa"
-  order: 10
+  order: "10"
 
 ENVIRONMENT_NAME: "QA"
 APP_VERSION: 
