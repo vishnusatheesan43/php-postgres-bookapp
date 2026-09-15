@@ -16,4 +16,4 @@ ingress:
   order: 10
 
 ENVIRONMENT_NAME: "QA"
-APP_VERSION: ""      
+APP_VERSION: 
