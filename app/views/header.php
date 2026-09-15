@@ -14,9 +14,22 @@
         button { background: #4CAF50; color: white; border: none; cursor: pointer; }
         button:hover { background: #45a049; }
         .error { color: red; }
+        .env-badge {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-left: 10px;
+            vertical-align: middle;
+            background: #e7f3ff;
+            color: #0366d6;
+        }
     </style>
 </head>
 <body>
-    <h1>Book Catalog</h1>
+    <h1>Book Catalog
+        <span class="env-badge"><?php echo htmlspecialchars(ENVIRONMENT_NAME); ?> · v<?php echo htmlspecialchars(APP_VERSION); ?></span>
+    </h1>
     <a href="index.php?action=add"><button>Add New Book</button></a>
     <hr>

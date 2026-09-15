@@ -4,6 +4,9 @@ session_start(); // For CSRF and messages
 require_once 'db.php';
 require_once 'books.php';
 
+define('ENVIRONMENT_NAME', getenv('ENVIRONMENT_NAME') ?: 'local');
+define('APP_VERSION', getenv('APP_VERSION') ?: 'dev');
+
 // Simple routing based on URL
 $action = $_GET['action'] ?? 'list';
 $id = $_GET['id'] ?? null;
