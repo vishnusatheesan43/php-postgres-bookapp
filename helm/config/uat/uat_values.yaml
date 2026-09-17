@@ -4,13 +4,13 @@ region: "us-east-1"
 httpdDeployment:
   replicas: 2
   repository: 835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/httpd
-  tag: 
+  tag: httpd-1.0.20
 phpfpmDeployment:
   replicas: 2
   repository: 835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/php-fpm
-  tag: 
+  tag: phpfpm-1.0.20
 ingress:
   path: "/uat/*"
   order: 20
 ENVIRONMENT_NAME: "QA"
-APP_VERSION: qa
+APP_VERSION: 1.0.20
