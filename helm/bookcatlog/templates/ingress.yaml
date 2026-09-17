@@ -7,7 +7,7 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/group.name: bookcatalog-shared-alb
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/group.order: "{{ .Values.ingress.order | quote}}"  # Lower number evaluated first
+    alb.ingress.kubernetes.io/group.order: "{{ .Values.ingress.order }}"  # Lower number evaluated first
 spec:
   ingressClassName: alb
   rules:
