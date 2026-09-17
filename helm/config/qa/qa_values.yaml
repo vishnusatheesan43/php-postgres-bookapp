@@ -4,11 +4,11 @@ region: "us-east-1"
 httpdDeployment:
   replicas: 2
   repository: 835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/httpd
-  tag: httpd-1.0.15
+  tag: httpd-1.0.18
 phpfpmDeployment:
   replicas: 2
   repository: 835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/php-fpm
-  tag: phpfpm-1.0.15
+  tag: phpfpm-1.0.18
 ingress:
   path: "/qa/*"
   order: 10
