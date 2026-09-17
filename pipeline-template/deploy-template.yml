@@ -24,7 +24,7 @@
     - aws eks update-kubeconfig --region "$region" --name "$cluster"
 
     - echo "Deploying application to cluster"
-    - helm upgrade --install bookcatlogqa helm/bookcatlog -f "$Config_File" --set httpdDeployment.tag="$HTTPD_TAG" --set phpfpmDeployment.tag="$PHPFPM_TAG" --set APP_VERSION="$NEW_VERSION"
+    - helm upgrade --install bookcatlogqa helm/bookcatlog --namesapce "$namespace" -f "$Config_File" --set httpdDeployment.tag="$HTTPD_TAG" --set phpfpmDeployment.tag="$PHPFPM_TAG" --set APP_VERSION="$NEW_VERSION"
     
     - echo "Updating the tags back to config file for track"
     - if [[ $? -eq 0 ]]; then 
