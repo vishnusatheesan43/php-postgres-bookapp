@@ -2,7 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: httpd-deploy-hpa
-  namespace: {{ .Values.namespace }}  
+  namespace: {{ .Release.Namespace }}
 spec:
   maxReplicas: 10
   metrics:
