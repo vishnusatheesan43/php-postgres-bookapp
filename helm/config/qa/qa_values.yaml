@@ -10,7 +10,7 @@ phpfpmDeployment:
   repository: 835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/php-fpm
   tag: phpfpm-1.0.15
 ingress:
-  path: "/qa"
-  order: "10"
+  path: "/qa/*"
+  order: 10
 ENVIRONMENT_NAME: "QA"
 APP_VERSION: qa
