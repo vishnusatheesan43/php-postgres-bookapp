@@ -30,7 +30,7 @@
     - if [[ $? -eq 0 ]]; then 
       yq -i '.httpdDeployment.tag = env(HTTPD_TAG)' "$Config_File";
       yq -i '.phpfpmDeployment.tag = env(PHPFPM_TAG)' "$Config_File";
-      yq -i '.APP_VERSION = env($NEW_VERSION)' "$Config_File";
+      yq -i '.APP_VERSION = env(NEW_VERSION)' "$Config_File";
       fi
     - git config --global user.email "gitlab-ci@example.com"
     - git config --global user.name "GitLab CI Bot"
