@@ -110,6 +110,13 @@ Deploy-QA:
     ENV: "qa"
   when: manual  
 
+Deploy-uat:
+  stage: deploy
+  extends: .deploy_template
+  variables:
+    ENV: "uat"
+  when: manual   
+
      
 
 

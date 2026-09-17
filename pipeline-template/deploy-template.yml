@@ -3,7 +3,7 @@
   needs:
    - job: Build-and-push
      artifacts: true 
-   - job: Update-version
+   - job: Bump-version
 
   before_script:
     - Config_File="helm/config/${ENV}/${ENV}_values.yaml"
@@ -17,6 +17,7 @@
     - echo "HTTPD TAG     :- $HTTPD_TAG"  
     - echo "PHPFPM TAG    :- $PHPFPM_TAG"
     - echo "Config File   :- $Config_File"
+    - echo "Environment version :- $NEW_VERSION"
     - echo "======================================="
     
     - echo "Updating kubeconfig to authenticate eks cluster"
@@ -29,7 +30,7 @@
     - if [[ $? -eq 0 ]]; then 
       yq -i '.httpdDeployment.tag = env(HTTPD_TAG)' "$Config_File";
       yq -i '.phpfpmDeployment.tag = env(PHPFPM_TAG)' "$Config_File";
-      yq -i '.APP_VERSION = env(ENV)' "$Config_File";
+      yq -i '.APP_VERSION = env($NEW_VERSION)' "$Config_File";
       fi
     - git config --global user.email "gitlab-ci@example.com"
     - git config --global user.name "GitLab CI Bot"
