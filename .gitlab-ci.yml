@@ -2,8 +2,8 @@ include:
     - local: 'pipeline-template/deploy-template.yml'
 
 variables: 
-  PHPFPM_REGISTRY_NAME: "835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/php-fpm"
-  HTTPD_REGISTRY_NAME: "835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/httpd"
+  PHPFPM_REGISTRY_NAME: "658548981999.dkr.ecr.us-east-1.amazonaws.com/book-catalog/php-fpm"
+  HTTPD_REGISTRY_NAME: "658548981999.dkr.ecr.us-east-1.amazonaws.com/book-catalog/httpd"
 
 stages:
   - build-and-push

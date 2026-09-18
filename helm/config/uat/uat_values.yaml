@@ -3,11 +3,11 @@ namespace: "bookcatalog-uat"
 region: "us-east-1"
 httpdDeployment:
   replicas: 2
-  repository: 835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/httpd
+  repository: 658548981999.dkr.ecr.us-east-1.amazonaws.com/book-catalog/httpd
   tag: httpd-1.0.26
 phpfpmDeployment:
   replicas: 2
-  repository: 835590170478.dkr.ecr.us-east-1.amazonaws.com/book-catalog/php-fpm
+  repository: 658548981999.dkr.ecr.us-east-1.amazonaws.com/book-catalog/php-fpm
   tag: phpfpm-1.0.26
 ingress:
   path: "/uat"
