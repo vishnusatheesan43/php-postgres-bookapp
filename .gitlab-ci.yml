@@ -47,6 +47,7 @@ Build-and-push:
         - aws --version
 
     script:
+        - docker info
         #httpd image need ssl certs for enabling https the following command will generate the ssl cert and key
         - echo "Generating TLS certificate for httpd..."
         - mkdir -p httpd/ssl  
