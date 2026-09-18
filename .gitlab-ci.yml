@@ -57,13 +57,13 @@ Build-and-push:
         - env | grep -i "docker"
         - |
           echo "Waiting for Docker daemon to generate certificates..."
-            for i in $(seq 1 30); do
-              if [ -f "$DOCKER_CERT_PATH/ca.pem" ]; then
+          for i in $(seq 1 30); do
+            if [ -f "$DOCKER_CERT_PATH/ca.pem" ]; then
                 echo "Certificates found!"
-              break
-              fi
+            break
+            fi
             sleep 1
-            done
+          done
 
     script:
         - docker info
