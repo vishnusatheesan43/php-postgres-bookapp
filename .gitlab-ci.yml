@@ -40,7 +40,9 @@ Build-and-push:
 
     variables:
       DOCKER_HOST: "tcp://docker:2376"
-      DOCkER_TLS_CERTDIR: ""
+      DOCkER_TLS_CERTDIR: "/certs"
+      DOCKER_TLS_VERIFY: "1"
+      DOCKER_CERT_PATH: "/certs/client"
 
     needs:
       - job: Bump-version  
