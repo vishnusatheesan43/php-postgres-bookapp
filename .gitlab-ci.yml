@@ -35,13 +35,15 @@ Build-and-push:
     stage: build-and-push
     image: docker:27-cli
 
+    variables:
+      DOCKER_HOST: unix:///var/run/docker.sock
+      DOKCER_TLS_CERTDIR: ""
+
     needs:
       - job: Bump-version  
         artifacts: true
 
     before_script:
-        - echo "DOCKER_HOST=$DOCKER_HOST"
-        - env | grep -i Docker
         - echo "Installing openssl utility..."
         - apk add --no-cache openssl  
         - echo "Installing AWS"
@@ -49,7 +51,6 @@ Build-and-push:
         - aws --version
 
     script:
-        - docker info
         #httpd image need ssl certs for enabling https the following command will generate the ssl cert and key
         - echo "Generating TLS certificate for httpd..."
         - mkdir -p httpd/ssl  
