@@ -39,7 +39,7 @@ Build-and-push:
       - name: docker:27-dind
 
     variables:
-      DOKCER_TLS_CERTDIR: ""
+      DOCkER_TLS_CERTDIR: ""
 
     needs:
       - job: Bump-version  
