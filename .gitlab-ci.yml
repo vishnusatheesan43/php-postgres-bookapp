@@ -37,10 +37,8 @@ Build-and-push:
 
     services:
       - name: docker:27-dind
-        alias: docker
 
     variables:
-      DOCKER_HOST: tcp://docker:2375
       DOKCER_TLS_CERTDIR: ""
 
     needs:
@@ -53,8 +51,10 @@ Build-and-push:
         - echo "Installing AWS"
         - apk add --no-cache aws-cli
         - aws --version
+        - env | grep -i "docker"
 
     script:
+        - docker info
         #httpd image need ssl certs for enabling https the following command will generate the ssl cert and key
         - echo "Generating TLS certificate for httpd..."
         - mkdir -p httpd/ssl  
