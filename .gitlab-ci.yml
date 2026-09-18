@@ -35,8 +35,12 @@ Build-and-push:
     stage: build-and-push
     image: docker:27-cli
 
+    services:
+      - name: docker:27-dind
+        alias: docker
+
     variables:
-      DOCKER_HOST: unix:///var/run/docker.sock
+      DOCKER_HOST: tcp://docker:2375
       DOKCER_TLS_CERTDIR: ""
 
     needs:
