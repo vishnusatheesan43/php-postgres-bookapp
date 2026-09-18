@@ -70,7 +70,7 @@ Build-and-push:
         - docker tag docker.io/phpfpmimage "$PHPFPM_REGISTRY_NAME:phpfpm-$NEW_VERSION"
 
         - echo "Running ecr login"
-        - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 835590170478.dkr.ecr.us-east-1.amazonaws.com
+        - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 658548981999.dkr.ecr.us-east-1.amazonaws.com
 
         - echo "pushing httpd image to ECR"
         - docker push "$HTTPD_REGISTRY_NAME:httpd-$NEW_VERSION"
