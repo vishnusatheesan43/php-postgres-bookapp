@@ -34,16 +34,10 @@ Bump-version:
 Build-and-push:
     stage: build-and-push
     image: docker:27-cli
-    services:
-      - docker:27-dind
 
     needs:
       - job: Bump-version  
         artifacts: true
-
-    variables:
-      DOCKER_HOST: tcp://docker:2375
-      DOCKER_TLS_CERTDIR: ""  
 
     before_script:
         - echo "Installing openssl utility..."
