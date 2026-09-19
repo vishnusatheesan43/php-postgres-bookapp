@@ -8,9 +8,9 @@ metadata:
     alb.ingress.kubernetes.io/group.name: bookcatalog-shared-alb
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/group.order: "{{ .Values.ingress.order }}"  # Lower number evaluated first
-    alb.ingress.kubernetes.io/transform.httpd-service:>
+    alb.ingress.kubernetes.io/transform.httpd-service: |
       [ {
-        "type" = "url-rewrite",
+        "type": "url-rewrite",
         "urlRewriteConfig": {
           "rewrites":[
             {
