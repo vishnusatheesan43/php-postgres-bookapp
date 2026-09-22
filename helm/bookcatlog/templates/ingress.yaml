@@ -14,7 +14,7 @@ metadata:
         "urlRewriteConfig": {
           "rewrites":[
             {
-              "regex": "^/{{ .Values.ingress.path }}/(.*)$", 
+              "regex": "^{{ .Values.ingress.path }}/(.*)$", 
               "replace": "/$1"
             }
           ]
